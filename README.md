@@ -1,6 +1,6 @@
 # startup
 
-# Struktur Tabel `users`
+# Struktur Tabel
 
 ```sql
 CREATE TABLE users (
