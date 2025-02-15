@@ -28,14 +28,16 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	}
 
 	// Register user
-	user, err := h.userService.RegisterUser(input)
+	newUser, err := h.userService.RegisterUser(input)
 	if err != nil {
 		response := helper.APIResponse("Failed to register user", http.StatusInternalServerError, "error", nil)
 		c.JSON(http.StatusInternalServerError, response)
 		return // Pastikan untuk mengembalikan setelah mengirim respons
 	}
 
+	formatter := user.FormatUser(newUser, "tokentokentokentoken")
+
 	// Jika berhasil, kirim respons sukses
-	response := helper.APIResponse("Account has been registered", http.StatusOK, "success", user)
+	response := helper.APIResponse("Account has been registered", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
 }
