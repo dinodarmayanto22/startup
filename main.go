@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,17 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewSevice(userRepository)
+	userByEmail, err := userRepository.FindByEmail("dinodarmayanto22@gmail.com")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(userByEmail)
 
+	if userByEmail.ID == 0 {
+		fmt.Println("user tidak di temukan")
+	} else {
+		fmt.Println(userByEmail.Name)
+	}
 	userHandler := handler.NewUserHandler(userService)
 
 	router := gin.Default()
