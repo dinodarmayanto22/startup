@@ -1,3 +1,4 @@
+/*************  ✨ Codeium Command 🌟  *************/
 package handler
 
 import (
@@ -22,16 +23,18 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	// Bind JSON input
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		response := helper.APIResponse("Invalid request payload", http.StatusBadRequest, "error", nil)
-		c.JSON(http.StatusBadRequest, response)
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Registerid account failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
 		return // Pastikan untuk mengembalikan setelah mengirim respons
 	}
-
 	// Register user
 	newUser, err := h.userService.RegisterUser(input)
 	if err != nil {
-		response := helper.APIResponse("Failed to register user", http.StatusInternalServerError, "error", nil)
-		c.JSON(http.StatusInternalServerError, response)
+		response := helper.APIResponse("Registerid account failed", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
 		return // Pastikan untuk mengembalikan setelah mengirim respons
 	}
 
