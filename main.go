@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -10,6 +9,8 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+/*************  ✨ Codeium Command 🌟  *************/
 
 func main() {
 	dsn := "host=127.0.0.1 user=dino password=dino1234 dbname=startup_crowdfunding port=5432 sslmode=disable TimeZone=Asia/Jakarta"
@@ -21,17 +22,7 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewSevice(userRepository)
-	userByEmail, err := userRepository.FindByEmail("dinodarmayanto22@gmail.com")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(userByEmail)
 
-	if userByEmail.ID == 0 {
-		fmt.Println("user tidak di temukan")
-	} else {
-		fmt.Println(userByEmail.Name)
-	}
 	userHandler := handler.NewUserHandler(userService)
 
 	router := gin.Default()
@@ -39,12 +30,8 @@ func main() {
 	api := router.Group("/api/v1")
 
 	api.POST("/users", userHandler.RegisterUser)
+	api.POST("/sessions", userHandler.Login)
 
 	router.Run()
 
-	// user := user.User{
-	// 	Name: "Test simpan",
-	// }
-
-	// userRepository.Save(user)
 }
